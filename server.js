@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path =require('path')
 
 require('dotenv').config();
 
@@ -32,6 +33,13 @@ const admin = require('./routes/admin');
 //routes 
 app.use('/api/activity', activity);
 app.use('/api/admin', admin)
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('./client/build'))
+    app.get('*', (req, res) => {
+        res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+}
 
 //opening the server
 app.listen(port, () => {
