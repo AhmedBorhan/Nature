@@ -1,0 +1,22 @@
+{
+  "name": "nature",
+  "version": "1.0.0",
+  "description": "nature website",
+  "main": "server.js",
+  "scripts": {
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "nature": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "mio group",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^4.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.11"
+  }
+}
