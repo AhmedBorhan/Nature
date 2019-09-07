@@ -1,7 +1,7 @@
 const express = require('express');
 //const cors = require('cors');
 const mongoose = require('mongoose');
-const methodOverride = require('method-override');
+
 
 const path =require('path')
 
@@ -11,9 +11,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
-app.use(methodOverride('_method'));
+
 
 
 
