@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "nature website",
   "main": "server.js",
+  "engines": {
+    "node": "10.12.0",
+    "npm": "6.9.0"
+  },
   "scripts": {
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
