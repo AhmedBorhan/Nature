@@ -1,8 +1,41 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-
 const Activity = require('../models/activity.model')
+
+//image props
+const sharp = require("sharp");
+const fs = require("fs");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./uploads/original");
+    },
+    filename: (req, file, cb) => {
+        const dateName = new Date().toISOString();
+        cb(null, `${Date.now()}${file.originalname}`);
+        //cb(null, file.fieldname + '-' + Date.now())
+    }
+});
+
+//filtering the file so it takes just images
+const fileFilter = (req, file, cb) => {
+    if (
+        file.mimetype == "image/jpeg" ||
+        file.mimetype == "image/png" ||
+        file.mimetype == "image/jpg"
+    ) {
+        cb(null, true);
+    } else {
+        cb("file type must be ( .jpeg , .png , .jpg)", false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    fileFilter: fileFilter
+});
 
 // @route   Post api/activity
 // @desc    get all activity
@@ -35,17 +68,19 @@ router.get('/', async(req, res) => {
 // @route   Post api/activity/add
 // @desc    add new activity
 // @access  private(admin)
-router.post('/add', verifyToken ,async(req, res) => {
+router.post('/add' ,async(req, res) => {
     const { title , description , location} = req.body
     const newActivity = new Activity({
         title,
         description,
         location
     })
+    console.log('newActivity', newActivity)
     try {
         const activity = await newActivity.save()
         res.json(activity)
     } catch (error) {
+        console.log('error :', error);
         res.status(400).json(error)
     }
 });
@@ -66,7 +101,7 @@ router.get('/:id', async (req, res) => {
 // @route   Post api/activity/: xfddbvdf
 // @desc    edit activity
 // @access  private(admin)
-router.post('/:id', verifyToken, async (req, res) => {
+router.post('/edit/:id', verifyToken, async (req, res) => {
     const { title, description, location } = req.body
     const { id } = req.params
     try {
@@ -82,6 +117,60 @@ router.post('/:id', verifyToken, async (req, res) => {
     } catch (error) {
         console.log('error', error)
         res.status(400).json(error)
+    }
+});
+
+// @route   POST api/activity/upload
+// @desc    upload request image 
+// @access  Private
+router.post("/upload",upload.array("activityImage", 15),(req, res) => {
+    //images pathes that we save in the model
+    //var ImagePath, imgName
+    var mem = ".jpeg";
+    const images = [];
+    for (let index = 0; index < req.files.length; index++) {
+        let imgName = `${Date.now() + index}${index * 1000}${mem}`;
+        let ImagePath = `http://localhost:5000/uploads/temp/${imgName}`;
+        console.log('index :', index);
+        console.log('imgName :', imgName);
+        try {
+            sharp(req.files[index].path)
+                .resize({
+                    width: 720,
+                    withoutEnlargement: true
+                })
+                .toFile(`uploads/temp/${imgName}`, (err, info) => {
+                    if (!err) {
+                        const data = {
+                            url: ImagePath,
+                            name: imgName
+                        }
+                        images.push(data)
+                        if (images.length === req.files.length) {
+                            return res.json(images)
+                        }
+                    } else {
+                        console.log("error is " + err)
+                        return res.json(err);
+                    }
+                });
+        } catch (err) {
+            console.log('error in sharp = ' + err)
+        }
+    }
+});
+
+// @route   Post api/activity/image/:id
+// @desc    delete activity
+// @access  private(admin)
+router.delete('/image/:name', async (req, res) => {
+    var path = `./uploads/temp/${req.params.name}`;
+    try {
+        fs.unlinkSync(path);
+        //file removed
+        console.log('imag deleted')
+    } catch (err) {
+        console.error("error deleteing an old image" + err);
     }
 });
 

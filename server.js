@@ -38,6 +38,22 @@ const admin = require('./routes/admin');
 app.use('/api/activity', activity);
 app.use('/api/admin', admin)
 
+// uploads/products
+// getting the product image
+// public
+app.get('/uploads/:dest/:file', (req, res) => {
+    const name = req.params.file;
+    const dest = req.params.dest;
+    const me = (`./uploads/${dest}/${name}`);
+
+    if ((me).length > 0) {
+        res.sendFile(`./uploads/${dest}/${name}`, {
+            "root": __dirname
+        })
+    }
+
+})
+
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('./client/build'))
     app.get('*', (req, res) => {

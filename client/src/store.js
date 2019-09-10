@@ -19,6 +19,33 @@ const Login = thunk(async (actions, payload) => {
     }
     
 })
+const addActivity = thunk(async (actions, payload) => {
+    try {
+        const data = {
+            title:{
+                kr: payload.titleK,
+                ar: payload.titleA,
+                en: payload.titleE
+            },
+            description:{
+                kr: payload.descriptionK,
+                ar: payload.descriptionA,
+                en: payload.descriptionE
+            } ,
+            location:{
+                city: payload.city,
+                street: payload.street
+            }
+        }
+        const res = await axios.post('/api/activity/add', data)
+        console.log('res', res.data)
+        
+
+    } catch (error) {
+        console.log('error 0 :', error);
+        actions.setError(error)
+    }
+})
 
 const getActivity = thunk(async (actions, payload)=> {
 
@@ -42,9 +69,7 @@ const setLanguage = action((state, code) => {
     state.code = code
 })
 
-const addActivity = action((state, activity) => {
 
-})
 
 const editActivity = action((state, activity) => {
 
@@ -66,7 +91,8 @@ const adminModel = {
 
 const activityModel = {
     activity: {},
-    activities: []
+    activities: [],
+    addActivity
 };
 
 const errorModel = {

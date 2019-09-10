@@ -20,7 +20,7 @@ function Login() {
 
     return (
         <section className="section-book">
-            <div className="row">
+            <div className="">
                 <div className="book">
                     <div className="book__form">
                         <form className="form" onSubmit={(e) =>{

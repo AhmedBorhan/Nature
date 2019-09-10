@@ -2,8 +2,13 @@ import React from 'react'
 import {
     Link
 } from 'react-router-dom'
+import { useStoreState } from 'easy-peasy'
+import { LandingPage } from '../Strings'
 
 function Landing() {
+    
+    const code = useStoreState(state => state.language.code);
+
     return (
         <>
             <header class="header">
@@ -19,11 +24,11 @@ function Landing() {
                     <a href="#section-tours" class="btn btn--white btn--animated">Discover our tours</a>
                 </div>
             </header>
-            <main>
+            <main className={code === 'e'?"":"right_to_left"}>
                 <section class="section-about">
                     <div class="u-center-text u-margin-bottom-big">
                         <h2 class="heading-secondary">
-                            Exciting tours for adventurous people
+                            {LandingPage.title}
                         </h2>
                     </div>
 

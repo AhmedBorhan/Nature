@@ -18,14 +18,14 @@ function Navbar() {
     }
 
     return (
-        <div className="navigation">
+        <div className={code === 'e'?"navigation":"navigation right_to_left"}>
             <input type="checkbox" checked={state} onChange={onCheck} className="navigation__checkbox" id="navi-toggle" />
 
-            <label htmlFor="navi-toggle" className="navigation__button">
+            <label htmlFor="navi-toggle" className={code === 'e'?"navigation__button_en navigation__button":"navigation__button"}>
                 <span className="navigation__icon">&nbsp;</span>
             </label>
 
-            <div className="navigation__background">&nbsp;</div>
+            <div className={code === 'e'?"navigation__background_en navigation__background":"navigation__background"}>&nbsp;</div>
 
             <nav className="navigation__nav">
                 <ul className="navigation__list">
@@ -34,10 +34,10 @@ function Navbar() {
                     <li className="navigation__item"><Link to='/about' className="navigation__link" onClick={onCheck} >{navbar.about}</Link></li>
                     <li className="navigation__item"><Link to='/activities' className="navigation__link" onClick={onCheck} >{navbar.activities}</Link></li>
                     <li className="navigation__item"><Link to='/login' className="navigation__link" onClick={onCheck} >Login</Link></li>
-                    <li className="navigation__item">
-                        <Link className="navigation__link" onClick={() => { setLan('k') }} >Kr</Link>
-                        <Link className="navigation__link" onClick={() => { setLan('a') }} >Ar</Link>
-                        <Link className="navigation__link" onClick={() => { setLan('e') }} >En</Link>
+                    <li className="navigation__item btn__holder">
+                        <button className="btn btn--white"  onClick={() => { setLan('e') }} >English</button>
+                        <button className="btn btn--white"  onClick={() => { setLan('a') }} >عربي</button>
+                        <button className="btn btn--white"  onClick={() => { setLan('k') }} >کوردی</button>
                     </li>
                 </ul>
             </nav>

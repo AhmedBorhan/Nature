@@ -36,6 +36,7 @@ function App() {
                 <Route exact path="/membership" component={Membership} />
                 <Route exact path="/activity/:id" component={Activity} />
                 <Route exact path="/activities" component={Activities} />
+                <Route exact path="/add" component={Add} />
                 <Route exact path="/login" component={Login} />
                 <Route path="/" component={Footer} />
             </Router>

@@ -3,24 +3,16 @@ const Schema = mongoose.Schema;
 
 // Create Schema
 const ActivitySchema = new Schema({
-    title: [{
-        languag: {
-            type: String,
-            enum: ['en', 'ar', 'kr']
-        },
-        text: {
-            type: String
-        }
-    }],
-    description: [{
-        languag: {
-            type: String,
-            enum: ['en', 'ar', 'kr']
-        },
-        text: {
-            type: String
-        }
-    }],
+    title: {
+        kr:String,
+        ar:String,
+        en:String
+    },
+    description: {
+        kr: String,
+        ar: String,
+        en: String
+    },
     images: [{
         name: String,
         url: String
@@ -30,8 +22,7 @@ const ActivitySchema = new Schema({
     }],
     location: {
         city: {
-            type: String,
-            enum: ['slemani', 'hawler', 'karkuk', 'dhok', 'hallabja']
+            type: String
         },
         street: {
             type: String

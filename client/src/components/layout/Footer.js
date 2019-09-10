@@ -10,7 +10,7 @@ function Footer() {
     const setAdmin = useStoreActions(state => state.auth.setAdmin);
 
     return (
-        <footer className="footer">
+        <footer className={code === 'e'?"footer":"footer right_to_left"}>
             <div className="footer__logo-box">
 
                 <picture className="footer__logo">
