@@ -10,7 +10,7 @@ function About() {
     
     return (
         <>
-        <div className="row"className={code === 'e'?"about_us row":"about_us row right_to_left"}>
+        <div className="row" className={code === 'e'?"about_us row":"about_us row right_to_left"}>
             <div className="col-1-of-2">
                 <h1>{aboutPage.title}</h1>
                 <p className="footer__copyright">{aboutPage.text}</p>

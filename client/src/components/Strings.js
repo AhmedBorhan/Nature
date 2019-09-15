@@ -1,5 +1,5 @@
 import LocalizedStrings from 'react-localization';
-import Landing from './pages/Landing';
+
 
 export const navbar = new LocalizedStrings({
     k: {
@@ -51,10 +51,77 @@ export const aboutPage = new LocalizedStrings({
     }
 });
 
+export const addPage = new LocalizedStrings({
+    k: {
+        title: "سەردێڕ",
+        location: "ناونیشان ی چالاکی",
+        description:"ناوەڕۆک",
+        youtube: "لینکی ڤیدیۆ",
+        image: "وێنەی تایبەت بە چالاکیەکە",
+        choose: "زیادکردنی وێنە"
+
+    },
+    a: {
+        title: "مقدیمە",
+        location: "موقع النشاط",
+        description: "تفاصيل",
+        youtube: "روابط الفيديو",
+        image: "صور النشاط",
+        choose: "إضافة الصور"
+    },
+    e: {
+        title: "Title",
+        location: "Activity Location",
+        description: "Description",
+        youtube: "Youtube Links",
+        image: "Activity Images",
+        choose: "Add Images"
+    }
+});
+
+export const commonStrings = new LocalizedStrings({
+    k: {
+        save: "هەڵگرتن",
+        cancel: "گەڕانەوە",
+        add: "زیادکردن",
+        city: "پارێزگا",
+        street: "شەقام",
+        edit:"گۆڕانکاری",
+        delete:"سڕینەوە",
+        right:"© مافی بڵاوکردنەوەی پارێزراوە بۆ NOK 2019",
+        dev:"لەلایەن Born Interactive دیزاین و دروستکراوە"
+    },
+    a: {
+        save: "حفظ",
+        cancel: "إلغاء",
+        add: "إضافة",
+        city: "مدينة",
+        street: "شارع",
+        edit: "تعدیل",
+        delete: "مسح",
+        right:"© جميع الحقوق محفوضة لـ NOK 2019",
+        dev: "تم التصميم والتطوير من قبل Born Interactive"
+    },
+    e: {
+        save: "Save",
+        cancel: "Cancel",
+        add: "Add",
+        city: "City",
+        street: "Street",
+        edit: "Edit",
+        delete: "Delete",
+        right: "© Copyright NOK 2019. All rights reserved.",
+        dev: "Designed and developed by Born Interactive"
+    }
+});
+
 export const ChangeLanguage = (lan) =>{
     aboutPage.setLanguage(lan)
     navbar.setLanguage(lan)
     LandingPage.setLanguage(lan)
-    if(!localStorage.getItem('lan') || localStorage.getItem('lan') !== lan) localStorage.setItem('lan',lan)
+    commonStrings.setLanguage(lan)
+    addPage.setLanguage(lan)
+    //if(!localStorage.getItem('lan') || localStorage.getItem('lan') !== lan) 
+    localStorage.setItem('lan',lan)
     //window.location.reload()
 }

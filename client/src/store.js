@@ -1,4 +1,4 @@
-import { action, thunk} from 'easy-peasy'
+import { action, thunk } from 'easy-peasy'
 import axios from 'axios'
 import { setAuthToken } from './private/SetToken'
 import { ChangeLanguage } from './components/Strings'
@@ -7,39 +7,45 @@ import { ChangeLanguage } from './components/Strings'
 //Thunks
 const Login = thunk(async (actions, payload) => {
     try {
-        const res = await axios.post('/api/admin/login',payload)
-        const {token} = res.data
+        const res = await axios.post('/api/admin/login', payload)
+        const { token } = res.data
         localStorage.setItem('jwtToken', token);
         setAuthToken(token)
         actions.setAdmin(token)
-        
+
     } catch (error) {
         console.log('error 0 :', error);
         actions.setError(error)
     }
-    
+
 })
 const addActivity = thunk(async (actions, payload) => {
+    let vid = []
+    if(payload.video1)  vid.push(payload.video1) 
+    if(payload.video2)  vid.push(payload.video2) 
+    if(payload.video3)  vid.push(payload.video3) 
     try {
         const data = {
-            title:{
+            title: {
                 kr: payload.titleK,
                 ar: payload.titleA,
                 en: payload.titleE
             },
-            description:{
+            description: {
                 kr: payload.descriptionK,
                 ar: payload.descriptionA,
                 en: payload.descriptionE
-            } ,
-            location:{
+            },
+            location: {
                 city: payload.city,
                 street: payload.street
-            }
+            },
+            videos: vid,
+            images: payload.images
         }
         const res = await axios.post('/api/activity/add', data)
         console.log('res', res.data)
-        
+
 
     } catch (error) {
         console.log('error 0 :', error);
@@ -47,21 +53,29 @@ const addActivity = thunk(async (actions, payload) => {
     }
 })
 
-const getActivity = thunk(async (actions, payload)=> {
+const getActivity = thunk(async (actions, id) => {
+    try {
+        const res = await axios.get(`/api/activity/${id}`, id)
+        actions.setActivity(res.data)
 
+    } catch (error) {
+        console.log('error 0 :', error);
+        actions.setError(error)
+    }
 })
 
 const getActivities = thunk(async (actions, payload) => {
 
 })
+
 //Actions
-const setError = action((state, error) =>{
+const setError = action((state, error) => {
     console.log('error :', error);
     state.error = error
 })
 const setAdmin = action((state, data) => {
     state.admin = data
-    state.isAdmin = data.length>0
+    state.isAdmin = data.length > 0
 })
 const setLanguage = action((state, code) => {
     console.log('code :', code);
@@ -69,6 +83,10 @@ const setLanguage = action((state, code) => {
     state.code = code
 })
 
+const setActivity = action((state, activity) => {
+    console.log('activty ', activity )
+    state.activity = activity
+})
 
 
 const editActivity = action((state, activity) => {
@@ -92,25 +110,22 @@ const adminModel = {
 const activityModel = {
     activity: {},
     activities: [],
-    addActivity
+    error: {},
+    setError,
+    addActivity,
+    getActivity,
+    setActivity
 };
 
-const errorModel = {
-    error: {},
-    setError
-}
-
 const languageModel = {
-    code:"en",
+    code: localStorage.getItem('lan') || "",
     setLanguage,
 }
 
 const storeModel = {
     auth: adminModel,
     activity: activityModel,
-    language:languageModel,
-    errors: errorModel
-
+    language: languageModel
 };
 
 

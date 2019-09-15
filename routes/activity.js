@@ -69,11 +69,12 @@ router.get('/', async(req, res) => {
 // @desc    add new activity
 // @access  private(admin)
 router.post('/add' ,async(req, res) => {
-    const { title , description , location} = req.body
+    const { title , description , location, images} = req.body
     const newActivity = new Activity({
         title,
         description,
-        location
+        location,
+        images
     })
     console.log('newActivity', newActivity)
     try {
