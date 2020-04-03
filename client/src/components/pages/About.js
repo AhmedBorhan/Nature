@@ -19,11 +19,11 @@ function About() {
                 <h1>{aboutPage.title}</h1>
                 <div className="footer__navigation">
                     <ul className="social_media">
-                        <li className="footer__item"><Link to="" ><img className="social_icon" src={require("../../img/facebook.png")}/></Link></li>
-                        <li className="footer__item"><Link to="" ><img className="social_icon" src={require("../../img/instagram.png")}/></Link></li>
-                        <li className="footer__item"><Link to="" ><img className="social_icon" src={require("../../img/youtube.png")}/></Link></li>
-                        <li className="footer__item"><Link to="" ><img className="social_icon" src={require("../../img/telegram.png")}/></Link></li>
-                        <li className="footer__item"><Link to="" ><img className="social_icon" src={require("../../img/linkedin.png")}/></Link></li>
+                        <li className="footer__item"><Link to="" ><img alt="..." className="social_icon" src={require("../../img/facebook.png")}/></Link></li>
+                        <li className="footer__item"><Link to="" ><img alt="..." className="social_icon" src={require("../../img/instagram.png")}/></Link></li>
+                        <li className="footer__item"><Link to="" ><img alt="..." className="social_icon" src={require("../../img/youtube.png")}/></Link></li>
+                        <li className="footer__item"><Link to="" ><img alt="..." className="social_icon" src={require("../../img/telegram.png")}/></Link></li>
+                        <li className="footer__item"><Link to="" ><img alt="..." className="social_icon" src={require("../../img/linkedin.png")}/></Link></li>
                     </ul>
                     <ul className="footer__list">
                         <li className="footer__item"><p className="footer__link">Phone no.: 07701235477</p></li>

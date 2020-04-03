@@ -13,6 +13,7 @@ import Footer from './components/layout/Footer'
 //pages
 import Landing from './components/pages/Landing'
 import Activity from './components/pages/Activity'
+import Edit from './components/pages/Edit'
 import Activities from './components/pages/Activities'
 import Membership from './components/pages/Membership'
 import About from './components/pages/About'
@@ -35,6 +36,7 @@ function App() {
                 <Route exact path="/about" component={About} />
                 <Route exact path="/membership" component={Membership} />
                 <Route exact path="/activity/:id" component={Activity} />
+                <Route exact path="/edit/:id" component={Edit} />
                 <Route exact path="/activities" component={Activities} />
                 <Route exact path="/add" component={Add} />
                 <Route exact path="/login" component={Login} />

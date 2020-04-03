@@ -8,10 +8,9 @@ import {commonStrings} from '../Strings'
 function Footer() {
     const code = useStoreState(state => state.language.code);
     const setLan = useStoreActions(state => state.language.setLanguage);
-    const setAdmin = useStoreActions(state => state.auth.setAdmin);
 
     return (
-        <footer className={code === 'e'?"footer":"footer right_to_left"}>
+        <footer className={code === 'en'?"footer":"footer right_to_left"}>
             <div className="footer__logo-box">
 
                 <picture className="footer__logo">
@@ -34,22 +33,22 @@ function Footer() {
                 <div className="col-1-of-4">
                     <div className="footer__navigation">
                         <ul className="footer__list">
-                            <li className="footer__item footer__link" onClick={() => { setLan('k') }} >kurdih</li>
-                            <li className="footer__item footer__link" onClick={() => { setLan('a') }} >Arabic</li>
-                            <li className="footer__item footer__link" onClick={() => { setLan('e') }} >English</li>
+                            <li className="footer__item footer__link" onClick={() => { setLan('en') }} >English</li>
+                            <li className="footer__item footer__link" onClick={() => { setLan('ar') }} >عربي</li>
+                            <li className="footer__item footer__link" onClick={() => { setLan('kr') }} >کوردی</li>
                         </ul>
                     </div>
                 </div>
                 <div className="col-1-of-4">
-                    <div className="footer__navigation">
-                        <p className="footer__copyright">
+                    <div className="footer__copyright">
+                        <p>
                             {commonStrings.right}
                         </p>
                     </div>
                 </div>
                 <div className="col-1-of-4">
-                    <div className="footer__navigation">
-                        <p className="footer__copyright">
+                    <div className="footer__copyright">
+                        <p>
                             {commonStrings.dev}
                         </p>
                     </div>

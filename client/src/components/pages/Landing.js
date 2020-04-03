@@ -1,13 +1,18 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {
     Link
 } from 'react-router-dom'
-import { useStoreState } from 'easy-peasy'
-import { LandingPage } from '../Strings'
+import { useStoreState,useStoreActions } from 'easy-peasy'
+import { LandingPage,commonStrings } from '../Strings'
 
 function Landing() {
     
     const code = useStoreState(state => state.language.code);
+    const activity = useStoreState(state => state.activity.activity);
+    const getActivity = useStoreActions(state => state.activity.getActivity)
+    useEffect(() => {
+        getActivity('last')
+    }, [])
 
     return (
         <>
@@ -24,7 +29,8 @@ function Landing() {
                     <a href="#section-tours" class="btn btn--white btn--animated">Discover our tours</a>
                 </div>
             </header>
-            <main className={code === 'e'?"":"right_to_left"}>
+            <main className={code === 'en'?"":"right_to_left"}>
+            {activity.images && 
                 <section class="section-about">
                     <div class="u-center-text u-margin-bottom-big">
                         <h2 class="heading-secondary">
@@ -34,22 +40,21 @@ function Landing() {
 
                     <div class="row">
                         <div class="col-1-of-2">
-                            <h3 class="heading-tertiary u-margin-bottom-small">You're going to fall in love with nature</h3>
-                            <p class="paragraph">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, ipsum sapiente aspernatur libero repellat quis consequatur
-                                ducimus quam nisi exercitationem omnis earum qui.
-                            </p>
-                            <Link to="" class="btn-text">Learn more &rarr;</Link>
+                            <h3 class="heading-tertiary u-margin-bottom-small">{activity.title[code]}</h3>
+                            <p class="paragraph">{activity.description[code]}</p>
+                            <Link to={`/activity/${activity._id}`} class="btn-text">{commonStrings.more} &rarr;</Link>
                         </div>
-                        <div class="col-1-of-2">
-                            <div class="composition">
-                                <img src="https://cdn.pixabay.com/photo/2017/10/25/12/13/landscapes-2887796_960_720.jpg" alt="Photo 1" class="composition__photo composition__photo--p1" />
-                                <img src="https://cdn.pixabay.com/photo/2017/10/25/12/13/landscapes-2887796_960_720.jpg" alt="Photo 2" class="composition__photo composition__photo--p2" />
-                                <img src="https://cdn.pixabay.com/photo/2017/10/25/12/13/landscapes-2887796_960_720.jpg" alt="Photo 3" class="composition__photo composition__photo--p3" />
+                        
+                            <div class="col-1-of-2">
+                                <div class="composition">
+                                    <img src={activity.images[0].url} alt="Photo 1" class="composition__photo composition__photo--p1" />
+                                    <img src={activity.images[1].url} alt="Photo 2" class="composition__photo composition__photo--p2" />
+                                    <img src={activity.images[2].url} alt="Photo 3" class="composition__photo composition__photo--p3" />
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </section>
+                }
                 <section class="section-features">
                     <div class="row">
                         <div class="col-1-of-4">

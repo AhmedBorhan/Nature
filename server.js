@@ -45,7 +45,6 @@ app.get('/uploads/:dest/:file', (req, res) => {
     const name = req.params.file;
     const dest = req.params.dest;
     const me = (`./uploads/${dest}/${name}`);
-
     if ((me).length > 0) {
         res.sendFile(`./uploads/${dest}/${name}`, {
             "root": __dirname

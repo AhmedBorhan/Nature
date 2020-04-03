@@ -1,12 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import MyInput from '../comp/InputGroup'
 import { useStoreState, useStoreActions } from 'easy-peasy'
 import axios from 'axios'
 import { commonStrings, addPage } from '../Strings'
 
-function Add() {
+function Edit({ location, match }) {
     const code = useStoreState(state => state.language.code);
     const Add = useStoreActions(state => state.activity.addActivity);
+    const Delete = useStoreActions(state => state.activity.deleteActivity);
+    const activity = useStoreState(state => state.activity.activity);
+    const getActivity = useStoreActions(state => state.activity.getActivity)
+    //api/activity/:id
+    useEffect(() => {
+        console.log('object id is', match.params.id)
+        
+        getActivity(match.params.id)
+        console.log('activity', activity)
+    }, [])
+
+    useEffect(() => {
+        if(typeof activity === 'object' && Object.keys(activity).length !== 0){
+            console.log('activity 1 ', activity)
+            setstate({
+                _id:activity._id,
+                titleK: activity.title['kr'],
+                titleA: activity.title['ar'],
+                titleE: activity.title['en'],
+                descriptionK: activity.description['kr'],
+                descriptionA: activity.description['ar'],
+                descriptionE: activity.description['en'],
+                city: activity.location.city,
+                street: activity.location.street,
+                images: activity.images
+            })
+        }
+        
+    }, [activity])
 
     // when an image is selected to upload 
     const onUpload = async (e) => {
@@ -43,7 +72,8 @@ function Add() {
     }
 
     const initialState = {
-        from:"add",
+        from:"edit",
+        _id:"",
         titleK: "",
         titleA: "",
         titleE: "",
@@ -55,7 +85,8 @@ function Add() {
         images: [],
         video1: "",
         video2: "",
-        video3: "",
+        video3: ""
+        
     }
     const [state, setstate] = useState(initialState)
 
@@ -63,8 +94,14 @@ function Add() {
         setstate({ ...state, [e.target.name]: e.target.value })
     }
 
+    const onAdd = (e) =>{
+        e.preventDefault()
+        Add(state)
+        
+    }
+
     return (
-        <form onSubmit={() => { Add(state) }} >
+        <form onSubmit={onAdd} >
             <div class="background aa_bg">
             </div>
             <div className={code === 'e' ? "row" : "row right_to_left"}>
@@ -142,7 +179,7 @@ function Add() {
                         value={""}
                         name="video1"
                         onChange={onChange}
-                        
+
                     />
                     <MyInput
                         type="text"
@@ -150,7 +187,7 @@ function Add() {
                         value={""}
                         name="video2"
                         onChange={onChange}
-                        
+
                     />
                     <MyInput
                         type="text"
@@ -158,7 +195,7 @@ function Add() {
                         value={""}
                         name="video3"
                         onChange={onChange}
-                        
+
                     />
                 </div>
             </div>
@@ -183,10 +220,10 @@ function Add() {
             </div>
             <div className={code === 'e' ? "btn__holder en_font" : "btn__holder right_to_left"}>
                 <button className="btn btn--green" type="submit" >{commonStrings.save}</button>
-                <button className="btn btn--white--green" >{commonStrings.cancel}</button>
+                <button className="btn btn--white--green" onClick = {() =>{Delete(state._id)}} >{commonStrings.delete}</button>
             </div>
         </form>
     )
 }
 
-export default Add
+export default Edit

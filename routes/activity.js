@@ -53,11 +53,11 @@ router.get('/', async(req, res) => {
     //         $regex: `${search}`
     //     }
     // }] : ''
-    search ? filter.title = { $regex: `${search}` } : ''
-    city.length>0 ? filter["location.city"] = { $in : city } : ''
+    // search ? filter.title = { $regex: `${search}` } : ''
+    // city.length>0 ? filter["location.city"] = { $in : city } : ''
     console.log('filter', filter)
     try {
-        const activites = await Activity.find(filter) 
+        const activites = await Activity.find() 
         res.json(activites)
     } catch (error) {
         res.json({error : error}); 
@@ -65,21 +65,38 @@ router.get('/', async(req, res) => {
     
 });
 
+// @route   get api/activity/last
+// @desc    get last activity
+// @access  public
+router.get('/last', async (req, res) => {
+    try {
+        const lastActivity = await Activity.findOne()
+        res.json(lastActivity)
+    } catch (error) {
+        res.json({ error: error });
+    }
+})
+
 // @route   Post api/activity/add
 // @desc    add new activity
 // @access  private(admin)
 router.post('/add' ,async(req, res) => {
     const { title , description , location, images} = req.body
+    images.map(image => {
+        image.url = `http://localhost:5000/uploads/images/${image.name}`;
+    })
     const newActivity = new Activity({
         title,
         description,
-        location,
-        images
+        location
     })
     console.log('newActivity', newActivity)
     try {
         const activity = await newActivity.save()
         res.json(activity)
+        images.map(image => {
+            copyImage(image.name)
+        })
     } catch (error) {
         console.log('error :', error);
         res.status(400).json(error)
@@ -99,12 +116,15 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// @route   Post api/activity/: xfddbvdf
+// @route   Post api/activity/edit/:id
 // @desc    edit activity
 // @access  private(admin)
-router.post('/edit/:id', verifyToken, async (req, res) => {
-    const { title, description, location } = req.body
+router.post('/edit/:id', async (req, res) => {
+    const { title, description, location, images } = req.body
     const { id } = req.params
+    images.map(image => {
+        image.url = `http://localhost:5000/uploads/images/${image.name}`;
+    })
     try {
         const activity = await Activity.findById(id)
         if(!activity) return res.sendStatus(404)
@@ -112,9 +132,16 @@ router.post('/edit/:id', verifyToken, async (req, res) => {
         activity.title = title
         activity.description = description
         activity.location = location
+        activity.images = images
         //waiting to save it to the DB
         await activity.save()
         res.json(activity)
+        activity.images.map(item => {
+            var path = `./uploads/images/${item.name}`;
+            console.log("pathhhhhhhhh" , path)
+            if (!fs.existsSync(path)) copyImage(item.name)
+        })
+
     } catch (error) {
         console.log('error', error)
         res.status(400).json(error)
@@ -162,12 +189,22 @@ router.post("/upload",upload.array("activityImage", 15),(req, res) => {
 });
 
 // @route   Post api/activity/image/:id
-// @desc    delete activity
+// @desc    delete single image
 // @access  private(admin)
 router.delete('/image/:name', async (req, res) => {
     var path = `./uploads/temp/${req.params.name}`;
+    console.log('path', path)
     try {
-        fs.unlinkSync(path);
+        if(fs.existsSync(path)){
+            fs.unlinkSync(path);
+            console.log("temp")
+        }else {
+            path = `./uploads/images/${req.params.name}`;
+            fs.unlinkSync(path);
+            console.log("images")
+        }
+       
+        //
         //file removed
         console.log('imag deleted')
     } catch (err) {
@@ -182,11 +219,35 @@ router.delete('/:id', verifyToken, async (req, res) => {
     const { id } = req.params
     try {
         const activity = await Activity.findByIdAndRemove(id);
-        activity ? res.json({success : true}) : res.sendStatus(404)
+        if(activity) {
+            res.json({success : true})
+            activity.images.map(item => {
+                var path = `./uploads/images/${item.name}`;
+                DeleteImage(path);
+            })
+        } else {
+            res.sendStatus(404)
+        }  
     } catch (error) {
         res.status(400).json(error)
     }
 });
+
+const DeleteImage = (ImagePath) => {
+    try {
+        fs.unlinkSync(ImagePath);
+        //file removed
+    } catch (err) {
+        console.error("error deleteing an old image" + err);
+    }
+}
+
+const copyImage = async(name) =>{
+    await fs.copyFile(`./uploads/temp/${name}`, `./uploads/images/${name}`, (err) => {
+        if (err) throw err;
+    });
+    DeleteImage(`./uploads/temp/${name}`)
+}
 
 //jwt.verify(req.token, 'secretkey', (err, authData) => {
 function verifyToken(req, res, next) {

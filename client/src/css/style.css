@@ -31,6 +31,30 @@ a{
     background-size: cover;
     background-repeat: no-repeat;
 }
+.image-gallery-thumbnails img{
+    height: 65px;
+    object-fit: cover;
+}
+.image-gallery-slide img {
+    max-height: 560px;
+    object-fit: contain;
+}
+.composition__photo {
+    height: 200px;
+    object-fit: cover;
+    background-color: #f7f7f7;
+}
+@media only screen and (max-width: 37.5em) {
+    .composition__photo {
+        height: 80px !important;
+    }
+}
+@media only screen and (max-width: 56.25em) {
+    .composition__photo {
+        height: 80px !important;
+    }
+}
+
 @media only screen and (max-width: 56.25em) {
     .video-wrapper iframe {
         max-height: 480px;height: 100%;

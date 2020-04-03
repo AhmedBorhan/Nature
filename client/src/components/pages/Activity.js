@@ -59,7 +59,7 @@ function Activity({location , match}) {
 
 
     return found?(
-        <div className={code === 'e'?"":"right_to_left"}>
+        <div className={code === 'en'?"":"right_to_left"}>
             <div className="margin">
                 <Link to=""><h1>edit</h1></Link>
                 <h1>Siiiiiiiiiiiiiiiiiivaaaaaaaaaaaaaaaaaaaaaaaaaaaaan</h1> 
@@ -72,12 +72,12 @@ function Activity({location , match}) {
                 lazyLoad={false}
                 infinite={true}
                 showBullets={false}
-                showFullscreenButton={true}
+                showFullscreenButton={false}
                 showPlayButton={true}
                 showThumbnails={true}
                 showIndex={false}
                 showNav={true}
-                isRTL={code === 'e' ? false : true}
+                isRTL={code === 'en' ? false : true}
                 additionalClass="app-image-gallery"
             />
             <br></br>
@@ -86,7 +86,7 @@ function Activity({location , match}) {
             </p>
             <h2>1 viw</h2>
             <div className={code === 'e' ? "btn__holder en_font" : "btn__holder right_to_left"}>
-                <button className="btn btn--green" type="submit" >{commonStrings.edit}</button>
+                <Link to={`/edit/${activity._id}`} className="btn btn--green" type="submit" >{commonStrings.edit}</Link>
                 <button className="btn btn--white--green" >{commonStrings.delete}</button>
             </div>
             <br></br>
@@ -97,5 +97,9 @@ function Activity({location , match}) {
         </div>
     )
 }
+
+// سرور قرداغي محامي بيئة في السليمانية، أقام حفل زفافه بطريقة مختلفة وغير تقليدية..
+//     زفة "بالبايسكل"، التعهد بتربية قطة مشردة، زرع شجرتين في إحدى الحدائق العامة وتوزيع الورود على المواطنين من السواق والمارّة.
+// يقول سرور، وهو رئيس منظمة "طبيعة كردستان" بالشراكة، أن الهدف من هذه الخطوة هو "تشجيع المجتمع على حماية البيئة وممارسة الرياضة"
 
 export default Activity

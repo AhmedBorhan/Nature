@@ -43,8 +43,11 @@ const addActivity = thunk(async (actions, payload) => {
             videos: vid,
             images: payload.images
         }
-        const res = await axios.post('/api/activity/add', data)
-        console.log('res', res.data)
+        let res;
+        console.log("adddddddddddddddddddddddddddddddddd")
+        if (payload.from === 'add')  res = await axios.post('/api/activity/add', data)
+        else res = await axios.post(`/api/activity/edit/${payload._id}`, data )
+        console.log('res', payload)
 
 
     } catch (error) {
@@ -65,7 +68,19 @@ const getActivity = thunk(async (actions, id) => {
 })
 
 const getActivities = thunk(async (actions, payload) => {
+    try {
+        const res = await axios.get('/api/activity')
+        actions.setActivities(res.data)
 
+    } catch (error) {
+        console.log('error 0 :', error);
+        actions.setError(error)
+    }
+})
+
+const deleteActivity = thunk(async (actions, payload) => {
+    const res = await axios.delete('api/activity/payload')
+    console.log('Deleted')
 })
 
 //Actions
@@ -88,14 +103,11 @@ const setActivity = action((state, activity) => {
     state.activity = activity
 })
 
-
-const editActivity = action((state, activity) => {
-
+const setActivities = action((state, activity) => {
+    console.log('activties ', activity)
+    state.activities = activity
 })
 
-const deleteActivity = action((state, activity) => {
-
-})
 
 
 
@@ -114,7 +126,10 @@ const activityModel = {
     setError,
     addActivity,
     getActivity,
-    setActivity
+    setActivity,
+    getActivities,
+    setActivities,
+    deleteActivity
 };
 
 const languageModel = {
